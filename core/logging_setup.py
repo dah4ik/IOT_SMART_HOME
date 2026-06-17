@@ -5,16 +5,12 @@ Configuration file
 from pathlib import Path
 
 
-# =========================
 # Project details
-# =========================
 
 PROJECT_NAME = "IOT_SMART_HOME"
 
 
-# =========================
 # MQTT Broker configuration
-# =========================
 
 BROKER_HOST = "broker.hivemq.com"
 BROKER_PORT = 1883
@@ -26,9 +22,9 @@ PASSWORD = ""
 CLEAN_SESSION = True
 
 
-# =========================
+
 # MQTT Topics
-# =========================
+
 
 BASE_TOPIC = "iot_smart_home"
 
@@ -50,9 +46,9 @@ TOPICS = {
 }
 
 
-# =========================
+
 # Project folders
-# =========================
+
 
 ROOT_DIR = Path(__file__).resolve().parent
 
@@ -63,9 +59,9 @@ DB_PATH = str(DATA_DIR / "iot_smart_home.db")
 LOG_PATH = str(DATA_DIR / "iot_smart_home.log")
 
 
-# =========================
+
 # Alarm thresholds
-# =========================
+
 
 THRESHOLDS = {
     "temperature_high": 30.0,
@@ -78,9 +74,7 @@ THRESHOLDS = {
 }
 
 
-# =========================
 # Devices registry
-# =========================
 
 DEVICES = {
     "DHT_SENSOR": {

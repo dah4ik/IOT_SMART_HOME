@@ -1,0 +1,92 @@
+{
+  "rules": [
+    {
+      "id": "high_temperature_warning",
+      "source": "DHT_SENSOR",
+      "key": "temperature",
+      "operator": ">=",
+      "threshold": 30.0,
+      "severity": "WARNING",
+      "alarm_type": "temperature",
+      "message": "High room temperature detected",
+      "actions": ["create_alarm"]
+    },
+    {
+      "id": "critical_temperature_relay_on",
+      "source": "DHT_SENSOR",
+      "key": "temperature",
+      "operator": ">=",
+      "threshold": 35.0,
+      "severity": "CRITICAL",
+      "alarm_type": "temperature",
+      "message": "Critical temperature detected, relay enabled",
+      "actions": ["create_alarm", "relay_on"]
+    },
+    {
+      "id": "high_humidity_warning",
+      "source": "DHT_SENSOR",
+      "key": "humidity",
+      "operator": ">=",
+      "threshold": 80.0,
+      "severity": "WARNING",
+      "alarm_type": "humidity",
+      "message": "High humidity detected",
+      "actions": ["create_alarm"]
+    },
+    {
+      "id": "low_light_auto_relay",
+      "source": "LIGHT_SENSOR",
+      "key": "light",
+      "operator": "<",
+      "threshold": 100.0,
+      "severity": "INFO",
+      "alarm_type": "automation",
+      "message": "Low light detected, relay enabled automatically",
+      "actions": ["create_event", "relay_on"]
+    },
+    {
+      "id": "door_open_security",
+      "source": "REED_SENSOR",
+      "key": "door_open",
+      "operator": "==",
+      "threshold": 1.0,
+      "severity": "INFO",
+      "alarm_type": "security",
+      "message": "Main door opened",
+      "actions": ["create_alarm"]
+    },
+    {
+      "id": "high_electricity_warning",
+      "source": "METER_SENSOR",
+      "key": "electricity",
+      "operator": ">",
+      "threshold": 2.0,
+      "severity": "WARNING",
+      "alarm_type": "energy",
+      "message": "High electricity consumption detected",
+      "actions": ["create_alarm"]
+    },
+    {
+      "id": "high_water_warning",
+      "source": "METER_SENSOR",
+      "key": "water",
+      "operator": ">",
+      "threshold": 0.04,
+      "severity": "WARNING",
+      "alarm_type": "water",
+      "message": "High water consumption detected",
+      "actions": ["create_alarm"]
+    },
+    {
+      "id": "button_toggle_relay",
+      "source": "BUTTON_SENSOR",
+      "key": "value",
+      "operator": "==",
+      "threshold": 1.0,
+      "severity": "INFO",
+      "alarm_type": "manual_event",
+      "message": "Button was pressed, relay toggled",
+      "actions": ["create_event", "relay_toggle"]
+    }
+  ]
+}
