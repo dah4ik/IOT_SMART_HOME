@@ -1,115 +1,57 @@
 """
-Configuration file
+Logging configuration module.
 """
 
-from pathlib import Path
+import logging
+from logging.handlers import RotatingFileHandler
+
+from config import LOG_PATH
 
 
-# Project details
+    """
+    Configure application logging.
+    """
 
-PROJECT_NAME = "IOT_SMART_HOME"
+    log_format = (
+        "%(asctime)s | "
+        "%(levelname)s | "
+        "%(name)s | "
+        "%(message)s"
+    )
 
+    date_format = "%Y-%m-%d %H:%M:%S"
 
-# MQTT Broker configuration
+    formatter = logging.Formatter(
+        fmt=log_format,
+        datefmt=date_format,
+    )
 
-BROKER_HOST = "broker.hivemq.com"
-BROKER_PORT = 1883
-KEEP_ALIVE = 90
+    root_logger = logging.getLogger()
+    root_logger.setLevel(level)
 
-USERNAME = ""
-PASSWORD = ""
+    if root_logger.handlers:
+        return
 
-CLEAN_SESSION = True
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(level)
+    console_handler.setFormatter(formatter)
 
+    file_handler = RotatingFileHandler(
+        LOG_PATH,
+        maxBytes=2_000_000,
+        backupCount=5,
+        encoding="utf-8",
+    )
+    file_handler.setLevel(level)
+    file_handler.setFormatter(formatter)
 
-
-# MQTT Topics
-
-
-BASE_TOPIC = "iot_smart_home"
-
-TOPICS = {
-    "all": f"{BASE_TOPIC}/#",
-
-    "dht": f"{BASE_TOPIC}/dht/telemetry",
-    "light": f"{BASE_TOPIC}/light/telemetry",
-    "meter": f"{BASE_TOPIC}/meter/telemetry",
-    "reed": f"{BASE_TOPIC}/reed/telemetry",
-
-    "button": f"{BASE_TOPIC}/button/event",
-
-    "relay_cmd": f"{BASE_TOPIC}/relay/cmd",
-    "relay_status": f"{BASE_TOPIC}/relay/status",
-
-    "alarms": f"{BASE_TOPIC}/alarms",
-    "manager_status": f"{BASE_TOPIC}/manager/status",
-}
-
-
-
-# Project folders
+    root_logger.addHandler(console_handler)
+    root_logger.addHandler(file_handler)
 
 
-ROOT_DIR = Path(__file__).resolve().parent
+def get_logger(name: str) -> logging.Logger:
+    """
+    Return a named logger for project modules.
+    """
 
-DATA_DIR = ROOT_DIR / "data"
-DATA_DIR.mkdir(exist_ok=True)
-
-DB_PATH = str(DATA_DIR / "iot_smart_home.db")
-LOG_PATH = str(DATA_DIR / "iot_smart_home.log")
-
-
-
-# Alarm thresholds
-
-
-THRESHOLDS = {
-    "temperature_high": 30.0,
-    "temperature_critical": 35.0,
-    "humidity_high": 80.0,
-    "light_low": 100.0,
-    "electricity_high": 2.0,
-    "water_high": 0.04,
-    "device_offline_seconds": 45,
-}
-
-
-# Devices registry
-
-DEVICES = {
-    "DHT_SENSOR": {
-        "type": "sensor",
-        "room": "Living Room",
-        "description": "Temperature and humidity sensor",
-    },
-
-    "LIGHT_SENSOR": {
-        "type": "sensor",
-        "room": "Living Room",
-        "description": "Light intensity sensor",
-    },
-
-    "METER_SENSOR": {
-        "type": "meter",
-        "room": "Utility Room",
-        "description": "Electricity and water meter",
-    },
-
-    "REED_SENSOR": {
-        "type": "sensor",
-        "room": "Main Door",
-        "description": "Door open or close sensor",
-    },
-
-    "BUTTON_SENSOR": {
-        "type": "event",
-        "room": "Entrance",
-        "description": "Manual push button",
-    },
-
-    "RELAY_ACTUATOR": {
-        "type": "actuator",
-        "room": "Living Room",
-        "description": "Relay actuator for light or alarm control",
-    },
-}
+    return logging.getLogger(name)
